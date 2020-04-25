@@ -1,1 +1,263 @@
-/*First section of SQLZOO, SELECT basics*/--#1/*The example uses a WHERE clause to show the population of 'France'. Note that strings (pieces of text that are data) should be in 'single quotes'; Modify it to show the population of Germany*/SELECT populationFROM worldWHERE name = 'Germany'--#2/*Checking a list The word IN allows us to check if an item is in a list. The example shows the name and population for the countries 'Brazil', 'Russia', 'India' and 'China'.Show the name and the population for 'Sweden', 'Norway' and 'Denmark'.*/SELECT name, population FROM worldWHERE name IN ('Sweden', 'Norway', 'Denmark');--#3/*Which countries are not too small and not too big? BETWEEN allows range checking (range specified is inclusive of boundary values). The example below shows countries with an area of 250,000-300,000 sq. km. Modify it to show the country and the area for countries with an area between 200,000 and 250,000.*/SELECT name, area FROM worldWHERE area BETWEEN 200000 AND 250000/*Second section of SQLZOO, SELECT from world*/--#4/*Read the notes about this table. Observe the result of running this SQL command to show the name, continent and population of all countries.*/SELECT name, continent, populationFROM world--#5/*How to use WHERE to filter records. Show the name for the countries that have a population of at least 200 million. 200 million is 200000000, there are eight zeros.*/SELECT nameROM worldWHERE population >= 200000000--#6/*Give the name and the per capita GDP for those countries with a population of at least 200 million.*/Select name, GDP/population from world where population >= 200000000  --#7/*Show the name and population in millions for the countries of the continent 'South America'. Divide the population by 1000000 to get population in millions.*/Select name, population/1000000from worldwhere continent = 'South America' --#8/*Show the name and population for France, Germany, Italy*/Select name, population from world where name in ('France', 'Germany', 'Italy')--#9/*Show the countries which have a name that includes the word 'United'*/Select name from world where name like'%United%'--#10/*Two ways to be big: A country is big if it has an area of more than 3 million sq km or it has a population of more than 250 million. Show the countries that are big by area or big by population. Show name, population and area.*/Select name, population, area from world where area > 3000000 or population > 250000000--#11/*Exclusive OR (XOR). Show the countries that are big by area (more than 3 million) or big by population (more than 250 million) but not both. Show name, population and area.*/Select name, population, area from world where area > 3000000 xor population > 250000000--#12/*Show the name and population in millions and the GDP in billions for the countries of the continent 'South America'. Use the ROUND function to show the values to two decimal places.*/Select name, round(population/1000000,2), round(GDP/1000000000,2) from world where continent = 'South America' --#13/*Show the name and per-capita GDP for those countries with a GDP of at least one trillion (1000000000000; that is 12 zeros). Round this value to the nearest 1000.*/select name, round(GDP/population,-3) from world where gdp >= 1000000000000--#14/*Greece has capital Athens.Each of the strings 'Greece', and 'Athens' has 6 characters.Show the name and capital where the name and the capital have the same number of characters.*/SELECT name, capitalFROM worldWHERE length(name)= length(capital)--#15/*The capital of Sweden is Stockholm. Both words start with the letter 'S'.Show the name and the capital where the first letters of each match. Don't include countries where the name and the capital are the same word.*/SELECT name, capitalFROM worldwhere  LEFT(name,1) = left(capital, 1) xor name = capital--#16/*Equatorial Guinea and Dominican Republic have all of the vowels (a e i o u) in the name. They don't count because they have more than one word in the name. Find the country that has all the vowels and no spaces in its name.*/SELECT name FROM worldWHERE name LIKE '%a%' AND name LIKE '%e%' AND name LIKE '%i%' AND name LIKE '%o%' AND name LIKE '%u%' AND name NOT LIKE '% %';/*Third section of SQLZOO, SELECT nobel*/
+/*
+First section of SQLZOO, SELECT basics
+*/
+
+--#1
+/*
+The example uses a WHERE clause to show the population of 'France'. Note that strings (pieces of text that are data) should be in 'single quotes'; Modify it to show the population of Germany
+*/
+SELECT population
+FROM world
+WHERE name = 'Germany'
+
+--#2
+/*
+Checking a list The word IN allows us to check if an item is in a list. The example shows the name and population for the countries 'Brazil', 'Russia', 'India' and 'China'.Show the name and the population for 'Sweden', 'Norway' and 'Denmark'.
+*/
+SELECT name, population 
+FROM world
+WHERE name IN ('Sweden', 'Norway', 'Denmark');
+
+--#3
+/*
+Which countries are not too small and not too big? BETWEEN allows range checking (range specified is inclusive of boundary values). The example below shows countries with an area of 250,000-300,000 sq. km. Modify it to show the country and the area for countries with an area between 200,000 and 250,000.
+*/
+SELECT name, area FROM world
+WHERE area 
+BETWEEN 200000 AND 250000
+
+/*
+Second section of SQLZOO, SELECT from world
+*/
+
+--#4
+/*
+Read the notes about this table. Observe the result of running this SQL command to show the name, continent and population of all countries.
+*/
+SELECT name, continent, population
+FROM world
+
+--#5
+/*
+How to use WHERE to filter records. Show the name for the countries that have a population of at least 200 million. 200 million is 200000000, there are eight zeros.
+*/
+SELECT name
+ROM world
+WHERE population >= 200000000
+
+--#6
+/*
+Give the name and the per capita GDP for those countries with a population of at least 200 million.
+*/
+Select name, GDP/population 
+from world 
+where population >= 200000000  
+
+
+--#7
+/*
+Show the name and population in millions for the countries of the continent 'South America'. Divide the population by 1000000 to get population in millions.
+*/
+Select name, population/1000000
+from world
+where continent = 'South America' 
+
+--#8
+/*
+Show the name and population for France, Germany, Italy
+*/
+Select name, population 
+from world 
+where name in ('France', 'Germany', 'Italy')
+
+--#9
+/*
+Show the countries which have a name that includes the word 'United'
+*/
+Select name 
+from world 
+where name like'%United%'
+
+--#10
+/*
+Two ways to be big: A country is big if it has an area of more than 3 million sq km or it has a population of more than 250 million. Show the countries that are big by area or big by population. Show name, population and area.
+*/
+Select name, population, area 
+from world 
+where area > 3000000 or population > 250000000
+
+--#11
+/*
+Exclusive OR (XOR). Show the countries that are big by area (more than 3 million) or big by population (more than 250 million) but not both. Show name, population and area.
+*/
+Select name, population, area 
+from world w
+here area > 3000000 xor population > 250000000
+
+--#12
+/*
+Show the name and population in millions and the GDP in billions for the countries of the continent 'South America'. Use the ROUND function to show the values to two decimal places.
+*/
+Select name, round(population/1000000,2), round(GDP/1000000000,2) 
+from world 
+where continent = 'South America' 
+
+--#13
+/*
+Show the name and per-capita GDP for those countries with a GDP of at least one trillion (1000000000000; that is 12 zeros). Round this value to the nearest 1000.
+*/
+select name, round(GDP/population,-3) 
+from world 
+where gdp >= 1000000000000
+
+--#14
+/*
+Greece has capital Athens.
+Each of the strings 'Greece', and 'Athens' has 6 characters.
+Show the name and capital where the name and the capital have the same number of characters.
+*/
+SELECT name, capital
+FROM world
+WHERE length(name)= length(capital)
+
+--#15
+/*
+The capital of Sweden is Stockholm. Both words start with the letter 'S'.
+Show the name and the capital where the first letters of each match. Don't include countries where the name and the capital are the same word.
+*/
+SELECT name, capital
+FROM world
+where  LEFT(name,1) = left(capital, 1) xor name = capital
+
+
+--#16
+/*
+Equatorial Guinea and Dominican Republic have all of the vowels (a e i o u) in the name. They don't count because they have more than one word in the name. Find the country that has all the vowels and no spaces in its name.
+*/
+SELECT name 
+FROM world
+WHERE name LIKE '%a%' AND name LIKE '%e%' AND name LIKE '%i%' AND name LIKE '%o%' AND name LIKE '%u%' AND name NOT LIKE '% %';
+
+
+/*
+Third section of SQLZOO, SELECT nobel
+*/
+
+--#17
+/*
+Change the query shown so that it displays Nobel prizes for 1950.
+*/
+SELECT yr, subject, winner
+FROM nobel
+where yr = 1950
+
+--#18
+/*
+Show who won the 1962 prize for Literature.
+*/
+SELECT winner
+FROM nobel
+WHERE yr = 1962 AND subject = 'Literature'
+
+--#19
+/*
+Show the year and subject that won 'Albert Einstein' his prize.
+*/
+select yr, subject 
+from nobel 
+where winner =  'Albert Einstein'
+
+--#20
+/*
+Give the name of the 'Peace' winners since the year 2000, including 2000.
+*/
+select winner 
+from nobel 
+where subject = 'peace' and yr >= 2000
+
+--#21
+/*
+Show all details (yr, subject, winner) of the Literature prize winners for 1980 to 1989 inclusive.
+*/
+select * 
+from nobel 
+where subject = 'Literature' and yr between 1980 and 1989
+
+--#22
+/*
+Show all details of the presidential winners:
+Theodore Roosevelt
+Woodrow Wilson
+Jimmy Carter
+Barack Obama
+*/
+select * 
+from nobel 
+where winner in ('Theodore Roosevelt', 'Woodrow Wilson', 'Jimmy Carter', 'Barack Obama')
+
+--#23
+/*
+Show the winners with first name John
+*/
+select winner from nobel where left(winner,4) = 'John'
+
+--#24
+/*
+Show the year, subject, and name of Physics winners for 1980 together with the Chemistry winners for 1984.
+*/
+select yr, subject, winner 
+from nobel 
+where subject = 'physics' and yr = 1980 or subject = 'chemistry' and yr = 1984
+
+--#25
+/*
+Show the year, subject, and name of winners for 1980 excluding Chemistry and Medicine
+*/
+SELECT *
+FROM nobel
+WHERE yr = 1980 AND subject NOT IN ('Chemistry', 'Medicine')
+
+--#26
+/*
+Show year, subject, and name of people who won a 'Medicine' prize in an early year (before 1910, not including 1910) together with winners of a 'Literature' prize in a later year (after 2004, including 2004)
+*/
+select * 
+from nobel 
+where subject = 'medicine' and yr < 1910 or subject = 'literature' and yr >= 2004
+
+
+--#27
+/*
+Find all details of the prize won by PETER GRÜNBERG
+*/
+select * 
+from nobel 
+where winner like 'PETER GR_NBERG'
+
+--#28
+/*
+Find all details of the prize won by EUGENE O'NEILL
+*/
+select * 
+from nobel 
+where winner like  'EUGENE O_NEILL'
+
+--#29
+/*
+Knights in order
+List the winners, year and subject where the winner starts with Sir. Show the the most recent first, then by name order.
+*/
+SELECT winner, yr, subject 
+FROM nobel 
+WHERE winner LIKE 'Sir%' ORDER BY yr DESC, winner
+
+--#30
+/*
+The expression subject IN ('Chemistry','Physics') can be used as a value - it will be 0 or 1.
+Show the 1984 winners and subject ordered by subject and winner name; but list Chemistry and Physics last.
+*/
+SELECT winner, subject 
+FROM nobel
+WHERE yr=1984 
+ORDER BY subject in ('Physics', 'Chemistry'), subject, winner
+
